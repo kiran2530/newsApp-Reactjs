@@ -13,9 +13,9 @@ export default class News extends Component {
             totalResults : 0
         }
     }
-    
-    async componentDidMount() {
-        let url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=cfabeabea85c4c488e0e92fac54ef503&page=1&pageSize=${this.props.pageSize}`;
+
+    async updateNews() {
+        const url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=cfabeabea85c4c488e0e92fac54ef503&page=${this.state.page}&pageSize=${this.props.pageSize}`;
 
         this.setState({
             loading : true
@@ -31,43 +31,23 @@ export default class News extends Component {
             loading : false
         })
     }
+    
+    async componentDidMount() {
+        this.updateNews();
+    }
 
     handlePreviousClick = async()=> {
         console.log("previous click");
-        let url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=cfabeabea85c4c488e0e92fac54ef503&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
-
-        this.setState({
-            loading : true
-        })
-
-        let data = await fetch(url);
-        let parseData = await data.json();
-        console.log(parseData);
-
-        this.setState({
-            articles : parseData.articles,
-            page : this.state.page - 1,
-            loading : false
-        })
+        
+        this.setState({page : this.state.page - 1})
+        this.updateNews()
     }
 
     handleNextClick = async()=> {
         console.log("next click");
-        let url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=cfabeabea85c4c488e0e92fac54ef503&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
-
-        this.setState({
-            loading : true
-        })
-
-        let data = await fetch(url);
-        let parseData = await data.json();
-        console.log(parseData);
-
-        this.setState({
-            articles : parseData.articles,
-            page : this.state.page + 1,
-            loading : false
-        })
+        
+        this.setState({page : this.state.page + 1})
+        this.updateNews()
     }
 
     render() {
@@ -81,7 +61,7 @@ export default class News extends Component {
                 <div className="row">
                     {!this.state.loading && this.state.articles.map((element)=> {
                         return (<div className="col-md-4" key={element.url}>
-                            <NewsItem title={element.title} description={element.description} imageUrl={element.urlToImage} readMoreUrl={element.url} />
+                            <NewsItem title={element.title} description={element.description} imageUrl={element.urlToImage} readMoreUrl={element.url} date={element.publishedAt} />
                         </div>)
                     })}
                 

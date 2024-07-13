@@ -4,7 +4,7 @@ export default class NewsItem extends Component {
 
 
     render() {
-        let {title, description, imageUrl, readMoreUrl} = this.props;
+        let {title, description, imageUrl, readMoreUrl, date} = this.props;
         return (
         <div className='my-3'>
             <div className="card">
@@ -12,6 +12,7 @@ export default class NewsItem extends Component {
             <div className="card-body">
                 <h5 className="card-title">{title}</h5>
                 <p className="card-text">{description}</p>
+                <p className="card-text"><small className="text-muted">{new Date(date).toGMTString()}</small></p>
                 <a href={readMoreUrl} className="btn btn-primary">Read More</a>
             </div>
             </div>
