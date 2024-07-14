@@ -4,32 +4,46 @@ import Spinner from './Spinner';
 
 export default class News extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             articles : [],
             loading : false,
             page : 1,
             totalResults : 0
         }
+
+        document.title = `${this.props.category} - news`;
     }
 
     async updateNews() {
-        const url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=cfabeabea85c4c488e0e92fac54ef503&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+        this.props.setProgress(1);
+        try{
+            const url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=cfabeabea85c4c488e0e92fac54ef503&page=${this.state.page}&pageSize=${this.props.pageSize}`;
 
-        this.setState({
-            loading : true
-        })
+            this.setState({
+                loading : true
+            })
 
-        let data = await fetch(url);
-        let parseData = await data.json();
-        console.log(parseData);
+            this.props.setProgress(10);
 
-        this.setState({
-            articles : parseData.articles,
-            totalResults : parseData.totalResults,
-            loading : false
-        })
+            let data = await fetch(url);
+            this.props.setProgress(30);
+            let parseData = await data.json();
+            this.props.setProgress(70);
+            console.log(parseData);
+
+            this.setState({
+                articles : parseData.articles,
+                totalResults : parseData.totalResults,
+                loading : false
+            })
+            this.props.setProgress(100);
+        }
+        catch(err) {
+            console.log(err);
+        }
+        
     }
     
     async componentDidMount() {
