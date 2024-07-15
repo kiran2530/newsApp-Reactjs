@@ -4,12 +4,9 @@ import './App.css';
 import React, { Component } from 'react'
 import NavBar from './components/NavBar';
 import News from './components/News';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route
-} from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import LoadingBar from 'react-top-loading-bar'
+import Footer from './components/Footer';
 
 
 export default class App extends Component {
@@ -37,6 +34,7 @@ export default class App extends Component {
             <Route exact path='/sports' element={<News setProgress = {this.setProgress} key="sports" pageSize={8} category="sports" title="Sports News" />} />
             <Route exact path='/technology' element={<News setProgress = {this.setProgress} key="technology" pageSize={8} category="technology" title="Technology News" />} />
           </Routes>
+          <Footer/>
         </Router>
       </div>
     )
